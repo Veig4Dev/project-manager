@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_manager
+      MYSQL_USER: admin  # Adicione um usuário
+      MYSQL_PASSWORD: pass
+    command: --default-authentication-plugin=mysql_native_password --bind-address=0.0.0.0
+    volumes:
+      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:

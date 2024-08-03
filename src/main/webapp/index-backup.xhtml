@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Home - Project Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+        }
+        .section {
+            background: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px;
+            max-width: 45%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .navbar {
+            background-color: #343a40;
+            padding: 10px;
+            color: white;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: inline-block;
+            margin: 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .navbar a:hover,
+        .navbar a.active {
+            background-color: #495057;
+        }
+        .card {
+            background: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 800px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+        }
+        .form-group button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <div class="navbar">
+        <h:link value="Home" outcome="index" styleClass="nav-link"/>
+        <h:link value="Adicionar Projeto e Tarefa" outcome="index" styleClass="nav-link"/>
+    </div>
+
+    <div class="container">
+        <!-- Adicionar Projeto e Tarefa -->
+        <div class="section">
+            <h2>Adicionar Projeto e Tarefa</h2>
+            <h:form id="projectForm">
+                <p:panel header="Adicionar Projeto e Tarefa">
+                    <h:panelGroup>
+                        <h:outputText value="Título do Projeto:"/>
+                        <p:inputText value="#{projectBean.project.title}" required="true"/>
+                        <h:outputText value="Descrição do Projeto:"/>
+                        <p:inputTextarea value="#{projectBean.project.description}" rows="4" required="true"/>
+                        <h:outputText value="Data de Início:"/>
+                        <p:inputText value="#{projectBean.project.startDate}" required="true"/>
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputText value="Título da Tarefa:"/>
+                        <p:inputText value="#{taskBean.task.title}" required="true"/>
+                        <h:outputText value="Descrição da Tarefa:"/>
+                        <p:inputTextarea value="#{taskBean.task.description}" rows="4" required="true"/>
+                        <h:outputText value="Prioridade:"/>
+                        <p:selectOneMenu value="#{taskBean.task.priority}">
+                            <f:selectItem itemLabel="Muito Alta" itemValue="Muito Alta"/>
+                            <f:selectItem itemLabel="Alta" itemValue="Alta"/>
+                            <f:selectItem itemLabel="Baixa" itemValue="Baixa"/>
+                            <f:selectItem itemLabel="Muito Baixa" itemValue="Muito Baixa"/>
+                        </p:selectOneMenu>
+                        <h:outputText value="Estimativa em Horas:"/>
+                        <p:inputText value="#{taskBean.task.estimate}" required="true"/>
+                    </h:panelGroup>
+                    <p:commandButton value="Salvar Projeto e Tarefa" action="#{projectBean.saveProjectAndTask()}"/>
+                </p:panel>
+            </h:form>
+        </div>
+
+        <!-- Lista de Projetos -->
+        <div class="section">
+            <h2>Lista de Projetos</h2>
+            <h:form id="projectListForm">
+                <p:dataTable value="#{projectBean.projects}" var="project">
+                    <p:column headerText="Título">
+                        <h:outputText value="#{project.title}"/>
+                    </p:column>
+                    <p:column headerText="Descrição">
+                        <h:outputText value="#{project.description}"/>
+                    </p:column>
+                    <p:column headerText="Data de Início">
+                        <h:outputText value="#{project.startDate}"/>
+                    </p:column>
+                    <p:column>
+                        <p:commandLink value="Editar" action="#{projectBean.editProject(project)}"/>
+                        <p:commandLink value="Excluir" action="#{projectBean.deleteProject(project)}"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+    </div>
+</h:body>
+</html>

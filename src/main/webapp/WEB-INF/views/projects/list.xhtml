@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Listar Projetos</title>
+</h:head>
+<h:body>
+    <h:form>
+        <h:dataTable value="#{projectBean.projects}" var="project" styleClass="card">
+            <h:column>
+                <f:facet name="header">Título</f:facet>
+                <h:outputText value="#{project.title}" />
+            </h:column>
+            <h:column>
+                <f:facet name="header">Descrição</f:facet>
+                <h:outputText value="#{project.description}" />
+            </h:column>
+            <h:column>
+                <f:facet name="header">Data de Início</f:facet>
+                <h:outputText value="#{project.startDate}" />
+            </h:column>
+            <h:column>
+                <h:commandLink value="Editar" action="#{projectBean.edit(project.id)}" />
+                <h:commandLink value="Excluir" action="#{projectBean.delete(project.id)}" />
+            </h:column>
+        </h:dataTable>
+    </h:form>
+</h:body>
+</html>

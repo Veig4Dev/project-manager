@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich">
+
+<h:head>
+    <title>Home - Project Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+        }
+        .section {
+            background: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px;
+            max-width: 45%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .navbar {
+            background-color: #343a40;
+            padding: 10px;
+            color: white;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: inline-block;
+            margin: 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .navbar a:hover,
+        .navbar a.active {
+            background-color: #495057;
+        }
+        .card {
+            background: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 800px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+        }
+        .form-group button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <div class="navbar">
+        <h:link value="Home" outcome="index" styleClass="nav-link"/>
+        <h:link value="Adicionar Projeto e Tarefa" outcome="addProject" styleClass="nav-link"/>
+    </div>
+
+    <div class="container">
+        <!-- Adicionar Projeto e Tarefa -->
+        <div class="section">
+            <h2>Adicionar Projeto e Tarefa</h2>
+            <h:form id="projectForm">
+                <rich:panel header="Adicionar Projeto e Tarefa">
+                    <h:panelGroup>
+                        <h:outputText value="Título do Projeto:"/>
+                        <h:inputText value="#{projectBean.project.title}" required="true"/>
+                        <h:outputText value="Descrição do Projeto:"/>
+                        <h:inputTextarea value="#{projectBean.project.description}" rows="4" required="true"/>
+                        <h:outputText value="Data de Início:"/>
+                        <h:inputText value="#{projectBean.project.startDate}" required="true"/>
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputText value="Título da Tarefa:"/>
+                        <h:inputText value="#{taskBean.task.title}" required="true"/>
+                        <h:outputText value="Descrição da Tarefa:"/>
+                        <h:inputTextarea value="#{taskBean.task.description}" rows="4" required="true"/>
+                        <h:outputText value="Prioridade:"/>
+                        <h:selectOneMenu value="#{taskBean.task.priority}">
+                            <f:selectItem itemLabel="Muito Alta" itemValue="Muito Alta"/>
+                            <f:selectItem itemLabel="Alta" itemValue="Alta"/>
+                            <f:selectItem itemLabel="Baixa" itemValue="Baixa"/>
+                            <f:selectItem itemLabel="Muito Baixa" itemValue="Muito Baixa"/>
+                        </h:selectOneMenu>
+                        <h:outputText value="Estimativa em Horas:"/>
+                        <h:inputText value="#{taskBean.task.estimate}" required="true"/>
+                    </h:panelGroup>
+                    <h:commandButton value="Salvar Projeto e Tarefa" action="#{projectBean.saveProjectAndTask()}"/>
+                </rich:panel>
+            </h:form>
+        </div>
+
+        <!-- Lista de Projetos -->
+        <div class="section">
+            <h2>Lista de Projetos</h2>
+            <h:form id="projectListForm">
+                <rich:dataTable value="#{projectBean.projects}" var="project">
+                    <rich:column headerText="Título">
+                        <h:outputText value="#{project.title}"/>
+                    </rich:column>
+                    <rich:column headerText="Descrição">
+                        <h:outputText value="#{project.description}"/>
+                    </rich:column>
+                    <rich:column headerText="Data de Início">
+                        <h:outputText value="#{project.startDate}"/>
+                    </rich:column>
+                    <rich:column>
+                        <h:commandLink value="Editar" action="#{projectBean.editProject(project)}"/>
+                        <h:commandLink value="Excluir" action="#{projectBean.deleteProject(project)}"/>
+                    </rich:column>
+                </rich:dataTable>
+            </h:form>
+        </div>
+    </div>
+</h:body>
+</html>
